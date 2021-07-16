@@ -1,13 +1,16 @@
-from flask_pymongo import PyMongo
-
-from . import app
-
-app.config['MONGO_URI'] = 'mongodb://maktab:123456@localhost:27017/maktab?authSource=admin'
-mongo = PyMongo(app)
+from . import app, models
 
 
-@app.route('/all')
+@app.route('/')
 def show_all():
-    all_docs = mongo.db.flask.find()
-    print(all_docs)
-    return all_docs[0]['name']
+    return 'hello'
+
+
+@app.route('/food/create')
+def food_create():
+    food_instance = models.Food(
+        name='pizza',
+        region=['italy'],
+    )
+    food_instance.save()
+    return food_instance.to_json(), 201
